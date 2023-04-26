@@ -9,7 +9,7 @@ function longest(s1, s2) {
   sorted.sort();
   return sorted.join('')
 }
-a = "xyaabbbccccdefww"
-b = "xxxxyyyyabklmopq"
+a = "xyaabbbccccdefwtw"
+b = "xxxxyyyyabklmoptq"
 console.log(longest(a, b));
 
