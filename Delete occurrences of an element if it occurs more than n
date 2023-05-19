@@ -1,0 +1,5 @@
+function deleteNth(arr,n){
+    let sort=[];
+    arr.map(i=>sort.filter(item=>item==i).length<n?sort.push(i):null)
+    return sort;
+  }
