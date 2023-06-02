@@ -1,0 +1,24 @@
+function towerBuilder(nFloors) {
+  let tower=[];
+  let space=' ';
+  let asterisk='*';
+  let count=nFloors*2;
+  for (let i=1; i<=count; i+=2){
+  let floor=space.repeat((count-i)/2)+asterisk.repeat(i)+space.repeat((count-i)/2);
+    tower.push(floor);
+  }
+  return tower;
+}
+
+console.log(towerBuilder(5));
+
+
+function towerBuilder(nFloors) {
+  var tower = [];
+  for (var i = 0; i < nFloors; i++) {
+    tower.push(" ".repeat(nFloors - i - 1)
+             + "*".repeat((i * 2)+ 1)
+             + " ".repeat(nFloors - i - 1));
+  }
+  return tower;
+}
