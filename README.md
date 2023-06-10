@@ -1,3 +1,3 @@
 # My repository
 My first repository on GitHub
-ож.одж.оож.ждо.одж.одж.
+ож.одж.оож.ждо.одж.одж.дж.оджо
