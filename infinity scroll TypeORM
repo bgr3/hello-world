@@ -1,0 +1,59 @@
+ public async findPublicCategoriesWithCursor({
+    cursor,
+    sortBy,
+    sortDirection,
+    limit,
+  }: {
+    cursor: string;
+    sortBy: string;
+    sortDirection: string;
+    limit: number;
+  }): Promise<{
+    items: CategoriesViewModel[];
+    nextPage: boolean;
+    nextCursor: Date | null;
+  }> {
+    const vector = sortDirection === 'desc' ? '<' : '>';
+
+    try {
+      const queryBuilder = await this.categoryRepository
+        .createQueryBuilder('category')
+        .select()
+        .where('category.deletedAt IS NOT NULL')
+        .orderBy(`category.${sortBy}`, sortDirection == 'asc' ? 'ASC' : 'DESC')
+        .take(limit + 1);
+
+      if (sortBy === 'CreatedAt') {
+        queryBuilder.andWhere(`category.${sortBy} ${vector} :cursorValue`, {
+          cursorValue: cursor,
+        });
+      }
+      const dbResult = await queryBuilder.getManyAndCount();
+
+      const dbCount = dbResult[1];
+
+      let nextPage = false;
+      let nextCursor: Date | null = null;
+
+      const categories = dbResult[0];
+
+      if (dbCount > limit) {
+        nextPage = true;
+        categories.pop();
+        nextCursor = categories[categories.length - 1].createdAt;
+      }
+
+      const viewCategories = categories.map((c) =>
+        CategoriesViewModel.toCategoriesViewModel(c),
+      );
+
+      return {
+        items: viewCategories,
+        nextPage: nextPage,
+        nextCursor: nextCursor,
+      };
+    } catch (err) {
+      console.log(err);
+      return { items: [], nextPage: false, nextCursor: null };
+    }
+  }
